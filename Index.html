@@ -294,6 +294,174 @@ setLang();
 </script>
 
 </body>
+</html>    color:white;
+}
+
+/* loading */
+.loading-box{ display:none; margin-top:15px; }
+.bar{ width:100%; height:10px; background:#222; border-radius:5px; overflow:hidden; }
+.progress{ height:100%; width:0%; background:linear-gradient(90deg,#00b7ff,#00ffcc); }
+
+/* error */
+.error{ color:#ff3b3b; margin-top:10px; }
+
+/* footer */
+footer{
+    margin-top:40px;
+    padding:20px;
+    text-align:center;
+    font-size:14px;
+    opacity:0.7;
+}
+
+/* credit */
+.credit{
+    margin-top:10px;
+    background:#ff0000;
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="title-main">SCRIPTEUR2BZ</div>
+    <div class="title-sub">skider</div>
+</header>
+
+<div class="container">
+
+<label id="label-script">Script original</label>
+<textarea id="script"></textarea>
+
+<label id="label-search">Mot à chercher</label>
+<input id="search">
+
+<label id="label-replace">Nouveau mot</label>
+<input id="replace">
+
+<button class="primary" onclick="preview()" id="btn-preview">Prévisualiser</button>
+<button class="primary" onclick="startProcess()" id="btn-run">Remplacer</button>
+
+<div class="error" id="error"></div>
+
+<div class="loading-box" id="loadingBox">
+    <div id="loadingText">Loading...</div>
+    <div class="bar"><div class="progress" id="progress"></div></div>
+</div>
+
+<div class="preview" id="preview"></div>
+
+<button class="copy" onclick="copyResult()" id="btn-copy">Copier le résultat</button>
+
+</div>
+
+<footer id="footerText">
+Ce site est créé pour aider les petits créateurs de script qui n’ont pas d’inspiration.
+<br>
+<div class="credit" onclick="window.open('https://youtube.com/@scripteur2bz?si=FwLg8DBPWS1UFEtj')">
+▶ YouTube - Scripteur2bz
+</div>
+</footer>
+
+<script>
+const t={
+fr:{
+script:"Script original",
+search:"Mot à chercher",
+replace:"Nouveau mot",
+preview:"Prévisualiser",
+run:"Remplacer",
+copy:"Copier le résultat",
+loading:"Chargement...",
+error:"ERROR : mot introuvable dans le script",
+footer:"Ce site est créé pour aider les petits créateurs de script qui n’ont pas d’inspiration."
+},
+en:{
+script:"Original script",
+search:"Word to find",
+replace:"New word",
+preview:"Preview",
+run:"Replace",
+copy:"Copy result",
+loading:"Loading...",
+error:"ERROR: word not found in script",
+footer:"This site helps small creators edit scripts faster."
+}
+};
+
+function getLang(){
+let lang=(navigator.language||"fr").toLowerCase();
+return lang.includes("en")?"en":"fr";
+}
+
+function setLang(){
+let tr=t[getLang()];
+
+document.getElementById("label-script").innerText=tr.script;
+document.getElementById("label-search").innerText=tr.search;
+document.getElementById("label-replace").innerText=tr.replace;
+document.getElementById("btn-preview").innerText=tr.preview;
+document.getElementById("btn-run").innerText=tr.run;
+document.getElementById("btn-copy").innerText=tr.copy;
+document.getElementById("loadingText").innerText=tr.loading;
+document.getElementById("footerText").childNodes[0].textContent=tr.footer;
+}
+
+function preview(){
+let script=document.getElementById("script").value;
+let word=document.getElementById("search").value;
+let regex=new RegExp(word,"gi");
+
+if(!script.match(regex)){
+document.getElementById("error").innerText=t[getLang()].error;
+return;
+}
+
+document.getElementById("preview").innerHTML=
+script.replace(regex,m=>"<span class='highlight'>"+m+"</span>");
+}
+
+function startProcess(){
+let script=document.getElementById("script").value;
+let word=document.getElementById("search").value;
+let replace=document.getElementById("replace").value;
+let regex=new RegExp(word,"gi");
+
+if(!script.match(regex)){
+document.getElementById("error").innerText=t[getLang()].error;
+return;
+}
+
+document.getElementById("loadingBox").style.display="block";
+let bar=document.getElementById("progress");
+let p=0;
+
+let interval=setInterval(()=>{
+p+=5;
+bar.style.width=p+"%";
+
+if(p>=100){
+clearInterval(interval);
+document.getElementById("loadingBox").style.display="none";
+document.getElementById("preview").textContent=
+script.replace(regex,replace);
+}
+},50);
+}
+
+function copyResult(){
+navigator.clipboard.writeText(document.getElementById("preview").innerText);
+alert("Copié !");
+}
+
+setLang();
+</script>
+
+</body>
 </html>}
 
 button:hover{ transform:scale(1.05); }
