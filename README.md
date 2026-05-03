@@ -327,4 +327,216 @@ setLang();
 </script>
 
 </body>
+</html>    padding:12px;
+    background:#05070f;
+    border-radius:10px;
+
+    max-height:320px;
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    white-space:pre-wrap;
+    word-break:break-word;
+
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+/* highlight */
+.highlight{
+    background:red;
+    color:white;
+    padding:2px;
+}
+
+/* loading */
+.loading-box{ display:none; margin-top:15px; }
+.bar{ width:100%; height:10px; background:#222; border-radius:5px; overflow:hidden; }
+.progress{ height:100%; width:0%; background:linear-gradient(90deg,#00b7ff,#00ffcc); }
+
+/* ERROR */
+.error{
+    color:#ff3b3b;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* FOOTER */
+footer{
+    margin-top:40px;
+    padding:20px;
+    text-align:center;
+    font-size:14px;
+    opacity:0.7;
+    max-width:900px;
+}
+
+/* CREDIT */
+.credit{
+    margin-top:10px;
+    background:#ff0000;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.credit:hover{
+    background:#cc0000;
+    transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="title-main">SCRIPTEUR2BZ</div>
+    <div class="title-sub">skider</div>
+</header>
+
+<div class="container">
+
+    <label id="label-script">Script original</label>
+    <textarea id="script"></textarea>
+
+    <label id="label-search">Mot à chercher</label>
+    <input id="search" type="text">
+
+    <label id="label-replace">Nouveau mot</label>
+    <input id="replace" type="text">
+
+    <button class="primary" onclick="preview()" id="btn-preview">Prévisualiser</button>
+    <button class="primary" onclick="startProcess()" id="btn-run">Remplacer</button>
+
+    <div class="error" id="error"></div>
+
+    <div class="loading-box" id="loadingBox">
+        <div id="loadingText">Loading...</div>
+        <div class="bar">
+            <div class="progress" id="progress"></div>
+        </div>
+    </div>
+
+    <div class="preview" id="preview"></div>
+
+    <button class="copy" onclick="copyResult()" id="btn-copy">Copier le résultat</button>
+
+</div>
+
+<footer id="footerText">
+Ce site est créé pour aider les petits créateurs de script qui n’ont pas d’inspiration, cela les aide simplement à modifier plus rapidement les scripts et changer les noms.
+<br>
+
+<div class="credit" onclick="window.open('https://youtube.com/@scripteur2bz?si=FwLg8DBPWS1UFEtj')">
+▶ YouTube - Scripteur2bz
+</div>
+</footer>
+
+<script>
+
+/* ===== LANGUAGE SYSTEM ===== */
+const t = {
+  fr:{
+    script:"Script original",
+    search:"Mot à chercher",
+    replace:"Nouveau mot",
+    preview:"Prévisualiser",
+    run:"Remplacer",
+    copy:"Copier le résultat",
+    loading:"Chargement...",
+    error:"ERROR : mot introuvable dans le script",
+    footer:"Ce site est créé pour aider les petits créateurs de script qui n’ont pas d’inspiration, cela les aide simplement à modifier plus rapidement les scripts et changer les noms."
+  },
+  en:{
+    script:"Original script",
+    search:"Word to find",
+    replace:"New word",
+    preview:"Preview",
+    run:"Replace",
+    copy:"Copy result",
+    loading:"Loading...",
+    error:"ERROR: word not found in script",
+    footer:"This site helps small script creators to edit scripts faster and rename values easily."
+  }
+};
+
+function setLang(){
+    let lang = navigator.language.slice(0,2);
+    let tr = t[lang] || t.fr;
+
+    document.getElementById("label-script").innerText = tr.script;
+    document.getElementById("label-search").innerText = tr.search;
+    document.getElementById("label-replace").innerText = tr.replace;
+
+    document.getElementById("btn-preview").innerText = tr.preview;
+    document.getElementById("btn-run").innerText = tr.run;
+    document.getElementById("btn-copy").innerText = tr.copy;
+
+    document.getElementById("loadingText").innerText = tr.loading;
+    document.getElementById("footerText").childNodes[0].textContent = tr.footer + "\n";
+}
+
+/* ===== FUNCTIONS ===== */
+
+function preview(){
+    let script = document.getElementById("script").value;
+    let word = document.getElementById("search").value;
+    let preview = document.getElementById("preview");
+    let error = document.getElementById("error");
+
+    let regex = new RegExp(word,"gi");
+
+    if(!script.match(regex)){
+        error.innerText = (t[navigator.language.slice(0,2)]||t.fr).error;
+        return;
+    }
+
+    preview.innerHTML = script.replace(regex,m=>`<span class="highlight">${m}</span>`);
+}
+
+function startProcess(){
+    let script = document.getElementById("script").value;
+    let word = document.getElementById("search").value;
+    let replace = document.getElementById("replace").value;
+
+    let regex = new RegExp(word,"gi");
+
+    if(!script.match(regex)){
+        document.getElementById("error").innerText = (t[navigator.language.slice(0,2)]||t.fr).error;
+        return;
+    }
+
+    document.getElementById("loadingBox").style.display="block";
+
+    let bar = document.getElementById("progress");
+    let p=0;
+
+    let load=setInterval(()=>{
+        p+=5;
+        bar.style.width=p+"%";
+
+        if(p>=100){
+            clearInterval(load);
+            document.getElementById("loadingBox").style.display="none";
+
+            let result = script.replace(regex,replace);
+            document.getElementById("preview").textContent=result;
+        }
+    },50);
+}
+
+function copyResult(){
+    navigator.clipboard.writeText(document.getElementById("preview").innerText);
+    alert("Copié !");
+}
+
+setLang();
+
+</script>
+
+</body>
 </html>
