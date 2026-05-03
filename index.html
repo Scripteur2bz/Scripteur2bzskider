@@ -1,1 +1,393 @@
-<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>My Secure Page</title>\n    <style>\n        /* Your existing CSS styles go here */\n    </style>\n</head>\n<body>\n    <h1>Welcome to My Secure Page</h1>\n    <h2>Interactive Section</h2>\n    <form id="myForm">\n        <label for="userInput" aria-label="User Input">Input:</label>\n        <input type="text" id="userInput" placeholder="Enter your input here" required aria-required="true">\n        <button type="submit">Submit</button>\n    </form>\n    <p id="response" aria-live="polite"></p>\n    <script>\n        const form = document.getElementById('myForm');\n        form.addEventListener('submit', function (event) {\n            event.preventDefault();\n            const userInput = document.getElementById('userInput').value;\n            try {\n                // Validate input\n                if (!userInput) {\n                    throw new Error('Input cannot be empty');\n                }\n                // Sanitize user input to prevent XSS (a simple example)\n                const safeInput = userInput.replace(/</g, '&lt;').replace(/>/g, '&gt;');\n                // Display the safe input\n                document.getElementById('response').textContent = 'You entered: ' + safeInput;\n            } catch (error) {\n                console.error(error);\n                document.getElementById('response').textContent = 'Error: ' + error.message;\n            }\n        });\n    </script>\n</body>\n</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCRIPTEUR2BZskider</title>
+
+<style>
+/* ====== GLOBAL ====== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background: radial-gradient(circle at top, #0d0f1a, #05060a);
+    color:white;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow-x:hidden;
+}
+
+/* ====== HEADER ====== */
+header{
+    text-align:center;
+    margin-top:20px;
+    position:relative;
+}
+
+title-main{
+    font-size:48px;
+    font-weight:900;
+    background: linear-gradient(90deg,#00b7ff,#0066ff,#00e1ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    animation: shine 3s infinite linear;
+}
+
+title-sub{
+    font-size:22px;
+    color:#ff2d2d;
+    margin-top:-10px;
+    letter-spacing:2px;
+}
+
+/* light shine */
+@keyframes shine{
+    0%{filter:brightness(1);}
+    50%{filter:brightness(2);}
+    100%{filter:brightness(1);}
+}
+
+/* ====== CONTAINER ====== */
+.container{
+    width:90%;
+    max-width:1000px;
+    margin-top:30px;
+    background: rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:15px;
+    padding:20px;
+    backdrop-filter: blur(10px);
+    position:relative;
+    overflow:hidden;
+}
+
+/* light reflection */
+.container::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background: linear-gradient(120deg,transparent,rgba(0,255,255,0.1),transparent);
+    transform:rotate(25deg);
+    animation: moveLight 6s infinite linear;
+}
+
+@keyframes moveLight{
+    0%{transform:translateX(-100%) rotate(25deg);}
+    100%{transform:translateX(100%) rotate(25deg);}
+}
+
+/* ====== INPUTS ====== */
+textarea, input{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    background:#0b0f1a;
+    color:white;
+}
+
+textarea{
+    height:150px;
+    resize:none;
+}
+
+input:focus, textarea:focus {
+    box-shadow: 0 0 8px rgba(0, 183, 255, 0.5);
+}
+
+label{
+    margin-top:10px;
+    display:block;
+    font-size:14px;
+    opacity:0.8;
+}
+
+/* ====== BUTTONS ====== */
+button{
+    margin-top:15px;
+    padding:10px 15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+button:focus {
+    outline: 2px solid #00aaff;
+    outline-offset: 2px;
+}
+
+.primary{
+    background:#00aaff;
+    color:white;
+}
+
+.copy{
+    background:#00ff88;
+    color:black;
+}
+
+/* ====== PREVIEW ====== */
+.preview{
+    margin-top:15px;
+    padding:10px;
+    background:#05070f;
+    border-radius:10px;
+    min-height:100px;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+}
+
+.highlight{
+    background:red;
+    color:white;
+    padding:2px;
+}
+
+/* ====== LOADING ====== */
+.loading-box{
+    display:none;
+    margin-top:15px;
+}
+
+.bar{
+    width:100%;
+    height:10px;
+    background:#222;
+    border-radius:5px;
+    overflow:hidden;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#00b7ff,#00ffcc);
+    transition:width 0.2s;
+}
+
+/* ====== ERROR ====== */
+.error{
+    color:#ff3b3b;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* ====== FOOTER ====== */
+footer{
+    margin-top:40px;
+    padding:20px;
+    text-align:center;
+    font-size:14px;
+    opacity:0.7;
+    max-width:900px;
+}
+
+/* ====== CREDIT BUTTON ====== */
+.credit{
+    margin-top:10px;
+    background:#ff0000;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    transition: 0.3s;
+}
+.credit:hover{
+    background:#cc0000;
+}
+.credit:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1 class="title-main">SCRIPTEUR2BZ</h1>
+    <h2 class="title-sub">skider</h2>
+</header>
+
+<div class="container">
+
+    <label for="script">Script original</label>
+    <textarea id="script" placeholder="Collez votre script ici..."></textarea>
+
+    <label for="search">Mot à chercher</label>
+    <input id="search" type="text" placeholder="Mot à remplacer">
+
+    <label for="replace">Nouveau mot</label>
+    <input id="replace" type="text" placeholder="Nouveau mot">
+
+    <button class="primary" id="previewBtn" aria-label="Prévisualiser les changements">Prévisualiser</button>
+    <button class="primary" id="replaceBtn" aria-label="Effectuer le remplacement">Remplacer</button>
+
+    <div class="error" id="error" role="alert" aria-live="polite"></div>
+
+    <div class="preview" id="preview" role="region" aria-label="Aperçu du résultat"></div>
+
+    <div class="loading-box" id="loadingBox">
+        <div>Loading...</div>
+        <div class="bar">
+            <div class="progress" id="progress"></div>
+        </div>
+    </div>
+
+    <button class="copy" id="copyBtn" aria-label="Copier le résultat dans le presse-papiers">Copier le résultat</button>
+
+</div>
+
+<footer>
+    <p>
+        Ce site est créé pour aider les petits créateurs de script qui n'ont pas d'inspiration, cela les aide simplement à modifier plus rapidement les scripts et changer les noms.
+    </p>
+    <button class="credit" id="youtubeBtn" aria-label="Visiter la chaîne YouTube Scripteur2bz">
+        ▶ YouTube - Scripteur2bz
+    </button>
+</footer>
+
+<script>
+
+const scriptEl = document.getElementById("script");
+const searchEl = document.getElementById("search");
+const replaceEl = document.getElementById("replace");
+const previewEl = document.getElementById("preview");
+const errorEl = document.getElementById("error");
+const loadingBox = document.getElementById("loadingBox");
+const progressEl = document.getElementById("progress");
+const previewBtn = document.getElementById("previewBtn");
+const replaceBtn = document.getElementById("replaceBtn");
+const copyBtn = document.getElementById("copyBtn");
+const youtubeBtn = document.getElementById("youtubeBtn");
+
+function clearError() {
+    errorEl.textContent = "";
+}
+
+function showError(message) {
+    errorEl.textContent = message;
+}
+
+function preview(){
+    const script = scriptEl.value;
+    const word = searchEl.value;
+
+    clearError();
+
+    if(!word){
+        previewEl.textContent = script;
+        return;
+    }
+
+    try {
+        const regex = new RegExp(word, "gi");
+
+        if(!script.match(regex)){
+            showError("ERROR : mot introuvable dans le script");
+            previewEl.textContent = script;
+            return;
+        }
+
+        previewEl.textContent = "";
+        const content = script;
+        const parts = content.split(regex);
+        const matches = content.match(regex);
+
+        if (matches) {
+            let html = "";
+            for (let i = 0; i < parts.length; i++) {
+                html += parts[i];
+                if (i < matches.length) {
+                    html += `<span class=\"highlight\">${matches[i]}</span>`;
+                }
+            }
+            previewEl.innerHTML = html;
+        }
+    } catch (e) {
+        showError("ERROR : Expression régulière invalide");
+        previewEl.textContent = script;
+    }
+}
+
+function startProcess(){
+    const script = scriptEl.value;
+    const word = searchEl.value;
+    const replace = replaceEl.value;
+
+    try {
+        const regex = new RegExp(word, "gi");
+
+        if(!script.match(regex)){
+            showError("ERROR : mot introuvable dans le script");
+            return;
+        }
+
+        clearError();
+        loadingBox.style.display = "block";
+
+        let percent = 0;
+
+        const interval = setInterval(() => {
+            percent += 5;
+            progressEl.style.width = percent + "%";
+
+            if(percent >= 100){
+                clearInterval(interval);
+                loadingBox.style.display = "none";
+
+                const result = script.replace(regex, replace);
+                previewEl.textContent = result;
+            }
+        }, 80);
+    } catch (e) {
+        showError("ERROR : Expression régulière invalide");
+    }
+}
+
+function copyResult(){
+    const text = previewEl.innerText;
+    if (!text) {
+        showError("Aucun contenu à copier");
+        return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Copié !");
+    }).catch(() => {
+        showError("Erreur lors de la copie");
+    });
+}
+
+previewBtn.addEventListener("click", preview);
+replaceBtn.addEventListener("click", startProcess);
+copyBtn.addEventListener("click", copyResult);
+youtubeBtn.addEventListener("click", () => {
+    window.open('https://youtube.com/@scripteur2bz?si=FwLg8DBPWS1UFEtj');
+});
+
+</script>
+
+</body>
+</html>
